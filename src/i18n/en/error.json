@@ -1,0 +1,7 @@
+{
+    "error": {
+        "user": {
+            "E0001": "User not found"
+        }
+    }
+}
