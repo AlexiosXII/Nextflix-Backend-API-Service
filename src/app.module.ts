@@ -12,10 +12,12 @@ import { ContextInterceptor } from './common/interceptors/context.interceptor';
 import { LoggerModule } from './common/logger/logger.module';
 import { SuccessResponseInterceptor } from './common/interceptors/success-response.interceptor';
 import { ApplicationExceptionFilter } from './common/filter/application-error.filter'; // Add this import
+import { UnauthorizedErrorFilter } from './common/filter/unauthorized-error.filter';
 
 // Module
-import { UserModule } from './external/api/user/user.module';
 import { HealthModule } from './external/api/health/health.module';
+import { UserModule } from './external/api/user/user.module';
+import { AuthModule } from './external/api/auth/auth.module';
 
 @Module({
     imports: [
@@ -39,13 +41,14 @@ import { HealthModule } from './external/api/health/health.module';
             resolvers: [
                 { use: QueryResolver, options: ['lang'] },
                 AcceptLanguageResolver,
-                new HeaderResolver(['x-lang']),
+                new HeaderResolver(['x-language']),
             ],
         }),
 
         // application modules
         HealthModule,
         UserModule,
+        AuthModule,
     ],
     providers: [
         {
@@ -63,6 +66,10 @@ import { HealthModule } from './external/api/health/health.module';
         {
             provide: APP_FILTER,
             useClass: ApplicationExceptionFilter,
+        },
+        {
+            provide: APP_FILTER,
+            useClass: UnauthorizedErrorFilter,
         },
     ],
 })

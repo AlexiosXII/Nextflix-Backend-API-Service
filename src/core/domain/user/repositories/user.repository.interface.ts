@@ -20,4 +20,11 @@ export interface UserRepository {
      * @returns A promise that resolves to the created user.
      */
     create(user: User): Promise<User>;
+
+    /**
+     * Finds a user by their email.
+     * @param email - The email of the user.
+     * @returns A promise that resolves to the user if found, or rejects if not found.
+     */
+    findByEmail(email: string): Promise<User | null>;
 }

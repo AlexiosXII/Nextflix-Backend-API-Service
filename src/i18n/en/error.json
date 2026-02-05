@@ -1,7 +1,14 @@
 {
     "error": {
         "user": {
-            "E0001": "User not found"
+            "E0001": "User not found",
+            "E0002": "Password is required for creating a user",
+            "E0003": "Email already exists"
+        },
+        "auth": {
+            "E0001": "Invalid credentials provided",
+            "E0002": "Unauthorized access",
+            "E0003": "Authentication token has expired"
         }
     }
 }

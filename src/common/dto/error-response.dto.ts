@@ -1,12 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+class ErrorDetail {
+    @ApiProperty({
+        description: 'Error code',
+        example: 'error.user.E0001',
+        type: String,
+    })
+    code: string;
+
+    @ApiProperty({
+        description: 'Error message',
+        example: 'User not found',
+        type: String,
+    })
+    message: string;
+}
+
 export class ErrorResponseDto {
     @ApiProperty({
         description: 'HTTP status code',
         example: 400,
         type: Number,
     })
-    statusCode: number;
+    status: number;
 
     @ApiProperty({
         description: 'Error message or array of validation errors',
@@ -23,10 +39,13 @@ export class ErrorResponseDto {
 
     @ApiProperty({
         description: 'Error type',
-        example: 'Bad Request',
-        type: String,
+        example: {
+            code: 'error.common.E0001',
+            message: 'Bad Request',
+        },
+        type: ErrorDetail,
     })
-    error: string;
+    error: ErrorDetail;
 }
 
 export class NotFoundResponseDto {
@@ -35,7 +54,7 @@ export class NotFoundResponseDto {
         example: 404,
         type: Number,
     })
-    statusCode: number;
+    status: number;
 
     @ApiProperty({
         description: 'Error message',
@@ -46,10 +65,13 @@ export class NotFoundResponseDto {
 
     @ApiProperty({
         description: 'Error type',
-        example: 'Not Found',
-        type: String,
+        example: {
+            code: 'error.common.E0002',
+            message: 'Not Found',
+        },
+        type: ErrorDetail,
     })
-    error: string;
+    error: ErrorDetail;
 }
 
 export class UnauthorizedResponseDto {
@@ -58,7 +80,7 @@ export class UnauthorizedResponseDto {
         example: 401,
         type: Number,
     })
-    statusCode: number;
+    status: number;
 
     @ApiProperty({
         description: 'Error message',
@@ -69,10 +91,13 @@ export class UnauthorizedResponseDto {
 
     @ApiProperty({
         description: 'Error type',
-        example: 'Unauthorized',
-        type: String,
+        example: {
+            code: 'error.common.E0003',
+            message: 'Unauthorized',
+        },
+        type: ErrorDetail,
     })
-    error: string;
+    error: ErrorDetail;
 }
 
 export class InternalServerErrorResponseDto {
@@ -81,7 +106,7 @@ export class InternalServerErrorResponseDto {
         example: 500,
         type: Number,
     })
-    statusCode: number;
+    status: number;
 
     @ApiProperty({
         description: 'Error message',
@@ -92,8 +117,11 @@ export class InternalServerErrorResponseDto {
 
     @ApiProperty({
         description: 'Error type',
-        example: 'Internal Server Error',
-        type: String,
+        example: {
+            code: 'error.common.E0004',
+            message: 'Internal Server Error',
+        },
+        type: ErrorDetail,
     })
-    error: string;
+    error: ErrorDetail;
 }

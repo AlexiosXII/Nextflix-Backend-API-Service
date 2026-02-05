@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Param, Body, Inject, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, Inject, ParseIntPipe, UseGuards } from '@nestjs/common';
 import {
     ApiTags,
     ApiOperation,
@@ -9,16 +9,18 @@ import {
     ApiInternalServerErrorResponse,
     ApiCreatedResponse,
     ApiHeader,
+    ApiBearerAuth,
 } from '@nestjs/swagger';
 import { User } from 'src/core/domain/user/entities/user.entity';
 import { ErrorResponseDto, InternalServerErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserUseCase } from 'src/core/usecase/user/get-user.usecase';
 import { CreateUserUseCase } from 'src/core/usecase/user/create-user.usecase';
+import { AuthGuard } from 'src/common/guard/auth.guard';
 
 @ApiTags('Users')
 @ApiHeader({
-    name: 'x-lang',
+    name: 'x-language',
     description: 'Language header',
     required: false,
     schema: {
@@ -85,6 +87,8 @@ export class UserController {
         description: 'Internal server error',
         type: InternalServerErrorResponseDto,
     })
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
     async getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {
         return this.getUserUseCase.execute(id);
     }
