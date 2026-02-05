@@ -50,7 +50,7 @@ describe('UserController', () => {
         });
     });
 
-    describe('getUserById', () => {
+    describe('getUserInfo', () => {
         it('should return a user by id', async () => {
             const result: User = {
                 id: 1,
@@ -60,7 +60,7 @@ describe('UserController', () => {
 
             jest.spyOn(getUserUseCase, 'execute').mockResolvedValue(result);
 
-            expect(await userController.getUserById(1)).toBe(result);
+            expect(await userController.getUserInfo({ user: { userId: 1 } })).toBe(result);
             expect(getUserUseCase.execute).toHaveBeenCalledWith(1);
         });
     });

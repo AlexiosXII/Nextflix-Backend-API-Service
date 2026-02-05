@@ -4,7 +4,6 @@ import {
     ApiOperation,
     ApiResponse,
     ApiBody,
-    ApiParam,
     ApiBadRequestResponse,
     ApiInternalServerErrorResponse,
     ApiCreatedResponse,
@@ -83,7 +82,7 @@ export class UserController {
     })
     @ApiBearerAuth('access-token')
     @UseGuards(AuthGuard)
-    async getUserinfo(@Req() req: any): Promise<User> {
+    async getUserInfo(@Req() req: any): Promise<User> {
         const userId = req.user?.userId;
         return this.getUserUseCase.execute(userId);
     }
