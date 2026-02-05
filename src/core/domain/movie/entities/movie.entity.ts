@@ -4,4 +4,5 @@ export class Movie {
     posterPath: string;
     overview: string;
     releaseDate: string;
+    popularity: number;
 }

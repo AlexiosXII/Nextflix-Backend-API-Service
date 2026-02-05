@@ -8,6 +8,8 @@ import { GenreRepositoryImpl } from 'src/external/infrastructure/tmdb/repositori
 import { GetMoviesUseCase } from 'src/core/usecase/movie/get-movies.usecase';
 import { MovieRepositoryImpl } from 'src/external/infrastructure/tmdb/repositories/movie/movie.repository';
 import { GetMovieUseCase } from 'src/core/usecase/movie/get-movie.usecase';
+import { GetTrendingMoviesUseCase } from 'src/core/usecase/movie/get-trending-movies.usecase';
+import { SearchMoviesUseCase } from 'src/core/usecase/movie/search-movies.usecase';
 
 @Module({
     controllers: [MovieController],
@@ -16,6 +18,8 @@ import { GetMovieUseCase } from 'src/core/usecase/movie/get-movie.usecase';
         { provide: GetGenresUseCase.providerName, useClass: GetGenresUseCase },
         { provide: GetMoviesUseCase.providerName, useClass: GetMoviesUseCase },
         { provide: GetMovieUseCase.providerName, useClass: GetMovieUseCase },
+        { provide: GetTrendingMoviesUseCase.providerName, useClass: GetTrendingMoviesUseCase },
+        { provide: SearchMoviesUseCase.providerName, useClass: SearchMoviesUseCase },
         { provide: genreRepositoryProviderName, useClass: GenreRepositoryImpl },
         { provide: movieRepositoryProviderName, useClass: MovieRepositoryImpl },
     ],

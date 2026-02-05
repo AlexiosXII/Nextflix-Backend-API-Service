@@ -36,6 +36,7 @@ export class MovieRepositoryImpl implements MovieRepository {
             posterPath: tmdbMovie.poster_path,
             overview: tmdbMovie.overview,
             releaseDate: tmdbMovie.release_date,
+            popularity: tmdbMovie.popularity,
         }));
         return {
             page: page,
@@ -49,8 +50,19 @@ export class MovieRepositoryImpl implements MovieRepository {
      * Retrieves trending movies.
      * @returns A promise that resolves to an array of movies.
      */
-    async getTrendingMovies(): Promise<PaginationType<Movie>> {
-        throw new Error('Method not implemented.');
+    async getTrendingMovies(timeWindow: string): Promise<Movie[]> {
+        const res: { data: MovieListResponse } = await this.instance.get(
+            `${EndpointConfig.TrendingMoviesEndpoint.replace('{time_window}', timeWindow)}`,
+        );
+        const movies: Movie[] = res.data.results.map((tmdbMovie) => ({
+            id: tmdbMovie.id,
+            title: tmdbMovie.title,
+            posterPath: tmdbMovie.poster_path,
+            overview: tmdbMovie.overview,
+            releaseDate: tmdbMovie.release_date,
+            popularity: tmdbMovie.popularity,
+        }));
+        return movies;
     }
 
     /**
@@ -58,8 +70,24 @@ export class MovieRepositoryImpl implements MovieRepository {
      * @param query - The search query.
      * @returns A promise that resolves to an array of movies.
      */
-    async searchMovies(query: string): Promise<PaginationType<Movie>> {
-        throw new Error('Method not implemented.');
+    async searchMovies(page: number, searchKeyword: string): Promise<PaginationType<Movie>> {
+        const res: { data: MovieListResponse } = await this.instance.get(
+            `${EndpointConfig.SearchMoviesEndpoint}?query=${encodeURIComponent(searchKeyword)}&page=${page}`,
+        );
+        const movies: Movie[] = res.data.results.map((tmdbMovie) => ({
+            id: tmdbMovie.id,
+            title: tmdbMovie.title,
+            posterPath: tmdbMovie.poster_path,
+            overview: tmdbMovie.overview,
+            releaseDate: tmdbMovie.release_date,
+            popularity: tmdbMovie.popularity,
+        }));
+        return {
+            page: page,
+            totalPages: res.data.total_pages,
+            totalResults: res.data.total_results,
+            result: movies,
+        };
     }
 
     /**
@@ -77,6 +105,7 @@ export class MovieRepositoryImpl implements MovieRepository {
             posterPath: res.data.poster_path,
             overview: res.data.overview,
             releaseDate: res.data.release_date,
+            popularity: res.data.popularity,
         };
     }
 }

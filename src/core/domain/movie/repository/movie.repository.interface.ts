@@ -17,14 +17,15 @@ export interface MovieRepository {
      * Retrieves trending movies.
      * @returns A promise that resolves to an array of movies.
      */
-    getTrendingMovies(): Promise<PaginationType<Movie>>;
+    getTrendingMovies(timeWindow: string): Promise<Movie[]>;
 
     /**
-     * Searches for movies based on a query.
-     * @param query - The search query.
+     * Searches for movies based on a search keyword.
+     * @param page - The page number.
+     * @param searchKeyword - The search keyword.
      * @returns A promise that resolves to an array of movies.
      */
-    searchMovies(query: string): Promise<PaginationType<Movie>>;
+    searchMovies(page: number, searchKeyword: string): Promise<PaginationType<Movie>>;
 
     /**
      * Retrieves movie details by ID.

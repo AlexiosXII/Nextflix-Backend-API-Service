@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { OutgoingResponsePaginationDto } from 'src/common/dto/pagination.dto';
+import { IncomingRequestPaginationDto, OutgoingResponsePaginationDto } from 'src/common/dto/pagination.dto';
 import { SuccessResponseDto } from 'src/common/dto/success-response.dto';
 
 class GenreDto {
@@ -57,6 +57,13 @@ class MovieDto {
         type: String,
     })
     releaseDate: string;
+
+    @ApiProperty({
+        description: 'Popularity score',
+        example: 87.65,
+        type: Number,
+    })
+    popularity: number;
 }
 
 export class GenreSuccessResponseDto extends SuccessResponseDto {
@@ -89,4 +96,22 @@ export class MovieDetailSuccessResponseDto extends SuccessResponseDto {
         type: MovieDto,
     })
     data: MovieDto;
+}
+
+export class TrendingMovieDto {
+    @ApiProperty({
+        description: 'Time window for trending movies',
+        example: 'day',
+        type: String,
+    })
+    timeWindow: string;
+}
+
+export class SearchMovieDto extends IncomingRequestPaginationDto {
+    @ApiProperty({
+        description: 'Search keyword for movies',
+        example: 'Inception',
+        type: String,
+    })
+    searchKeyword: string;
 }
