@@ -15,6 +15,7 @@ import { ApplicationExceptionFilter } from './common/filter/application-error.fi
 
 // Module
 import { UserModule } from './external/api/user/user.module';
+import { HealthModule } from './external/api/health/health.module';
 
 @Module({
     imports: [
@@ -43,6 +44,7 @@ import { UserModule } from './external/api/user/user.module';
         }),
 
         // application modules
+        HealthModule,
         UserModule,
     ],
     providers: [

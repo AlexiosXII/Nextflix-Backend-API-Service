@@ -1,0 +1,16 @@
+# Ignore local artifacts that shouldn't be sent to Docker daemon
+node_modules
+dist
+.git
+.env
+venv
+.venv
+.idea
+.vscode
+*.log
+coverage
+tmp
+/.husky
+/.gitignore
+Dockerfile
+.dockerignore
