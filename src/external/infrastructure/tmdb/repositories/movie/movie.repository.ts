@@ -7,7 +7,7 @@ import { TmdbService } from '../../tmdb.service';
 import { EndpointConfig } from '../../tmdb.config';
 import { MovieDetailsResponse, MovieListResponse } from '../../type/movie';
 import { PaginationType } from 'src/common/type/pagination.type';
-import { MethodCache } from 'src/common/decorators/method-tracer/method-cache.decorator';
+import { MethodCache } from 'src/common/decorators/method-cache/method-cache.decorator';
 
 export const providerName = 'MovieRepositoryInterface';
 

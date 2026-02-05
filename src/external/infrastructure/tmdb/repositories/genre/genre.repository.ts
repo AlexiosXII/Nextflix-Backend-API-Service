@@ -6,7 +6,7 @@ import { TmdbService } from '../../tmdb.service';
 import { AxiosInstance } from 'node_modules/axios/index.cjs';
 import { TmdbGenre } from '../../type/genre';
 import { EndpointConfig } from '../../tmdb.config';
-import { MethodCache } from 'src/common/decorators/method-tracer/method-cache.decorator';
+import { MethodCache } from 'src/common/decorators/method-cache/method-cache.decorator';
 
 @MethodTracer()
 @Injectable()
