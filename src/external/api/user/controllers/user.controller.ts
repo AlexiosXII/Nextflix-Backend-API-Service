@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Param, Body, Inject, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, Inject, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
 import {
     ApiTags,
     ApiOperation,
@@ -63,16 +63,10 @@ export class UserController {
         return this.createUserUseCase.execute(createUserDto);
     }
 
-    @Get(':id')
+    @Get('')
     @ApiOperation({
-        summary: 'Get user by ID',
+        summary: 'Get user info',
         description: 'Retrieves a user by their unique identifier',
-    })
-    @ApiParam({
-        name: 'id',
-        type: 'number',
-        description: 'Unique identifier of the user',
-        example: 1,
     })
     @ApiResponse({
         status: 200,
@@ -89,7 +83,8 @@ export class UserController {
     })
     @ApiBearerAuth('access-token')
     @UseGuards(AuthGuard)
-    async getUserById(@Param('id', ParseIntPipe) id: number): Promise<User> {
-        return this.getUserUseCase.execute(id);
+    async getUserinfo(@Req() req: any): Promise<User> {
+        const userId = req.user?.userId;
+        return this.getUserUseCase.execute(userId);
     }
 }
