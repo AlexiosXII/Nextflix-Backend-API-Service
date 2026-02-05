@@ -49,12 +49,18 @@ export function MethodTracer() {
                                 this.logger.debug(
                                     `[${className}.${methodName}] returned: ${JSON.stringify(resolvedValue)}`,
                                 );
+                                // End tracer here
+                                // *
+                                // *
                                 return resolvedValue;
                             })
                             .catch((error) => {
                                 this.logger.error(
                                     `[${className}.${methodName}] function threw an error: ${error.message}`,
                                 );
+                                // End tracer here
+                                // *
+                                // *
                                 throw error;
                             });
                     }
