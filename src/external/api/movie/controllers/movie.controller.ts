@@ -1,13 +1,14 @@
-import { Controller, Get, Inject, UseGuards, Req, Query } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards, Req, Query, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiInternalServerErrorResponse, ApiHeader } from '@nestjs/swagger';
 import { InternalServerErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { GetGenresUseCase } from 'src/core/usecase/movie/get-genres.usecase';
 import { Genre } from 'src/core/domain/movie/entities/genre.entity';
-import { GenreSuccessResponseDto, MovieSuccessResponseDto } from './dto/movie.dto';
+import { GenreSuccessResponseDto, MovieDetailSuccessResponseDto, MovieSuccessResponseDto } from './dto/movie.dto';
 import { Movie } from 'src/core/domain/movie/entities/movie.entity';
 import { PaginationType } from 'src/common/type/pagination.type';
 import { GetMoviesUseCase } from 'src/core/usecase/movie/get-movies.usecase';
 import { IncomingRequestPaginationDto } from 'src/common/dto/pagination.dto';
+import { GetMovieUseCase } from 'src/core/usecase/movie/get-movie.usecase';
 
 @ApiTags('Movies')
 @ApiHeader({
@@ -26,6 +27,8 @@ export class MovieController {
         private readonly getGenresUseCase: GetGenresUseCase,
         @Inject(GetMoviesUseCase.providerName)
         private readonly getMoviesUseCase: GetMoviesUseCase,
+        @Inject(GetMovieUseCase.providerName)
+        private readonly getMovieUseCase: GetMovieUseCase,
     ) {}
 
     @Get()
@@ -44,6 +47,24 @@ export class MovieController {
     })
     async getMovies(@Query() paginationDto: IncomingRequestPaginationDto): Promise<PaginationType<Movie>> {
         return this.getMoviesUseCase.execute(paginationDto.page);
+    }
+
+    @Get(':id')
+    @ApiOperation({
+        summary: 'Get movie details',
+        description: 'Retrieves movie details by ID',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Movie details retrieved successfully',
+        type: MovieDetailSuccessResponseDto,
+    })
+    @ApiInternalServerErrorResponse({
+        description: 'Internal server error',
+        type: InternalServerErrorResponseDto,
+    })
+    async getMovie(@Param('id') movieId: number): Promise<Movie> {
+        return this.getMovieUseCase.execute(movieId);
     }
 
     @Get('genres')

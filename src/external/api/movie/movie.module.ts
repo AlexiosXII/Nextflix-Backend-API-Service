@@ -7,6 +7,7 @@ import { TmdbService } from 'src/external/infrastructure/tmdb/tmdb.service';
 import { GenreRepositoryImpl } from 'src/external/infrastructure/tmdb/repositories/genre/genre.repository';
 import { GetMoviesUseCase } from 'src/core/usecase/movie/get-movies.usecase';
 import { MovieRepositoryImpl } from 'src/external/infrastructure/tmdb/repositories/movie/movie.repository';
+import { GetMovieUseCase } from 'src/core/usecase/movie/get-movie.usecase';
 
 @Module({
     controllers: [MovieController],
@@ -14,6 +15,7 @@ import { MovieRepositoryImpl } from 'src/external/infrastructure/tmdb/repositori
         TmdbService,
         { provide: GetGenresUseCase.providerName, useClass: GetGenresUseCase },
         { provide: GetMoviesUseCase.providerName, useClass: GetMoviesUseCase },
+        { provide: GetMovieUseCase.providerName, useClass: GetMovieUseCase },
         { provide: genreRepositoryProviderName, useClass: GenreRepositoryImpl },
         { provide: movieRepositoryProviderName, useClass: MovieRepositoryImpl },
     ],

@@ -5,7 +5,7 @@ import { Movie } from 'src/core/domain/movie/entities/movie.entity';
 import { MovieRepository } from 'src/core/domain/movie/repository/movie.repository.interface';
 import { TmdbService } from '../../tmdb.service';
 import { EndpointConfig } from '../../tmdb.config';
-import { MovieListResponseDto, MovieResult } from '../../type/movie';
+import { MovieDetailsResponse, MovieListResponse } from '../../type/movie';
 import { PaginationType } from 'src/common/type/pagination.type';
 
 export const providerName = 'MovieRepositoryInterface';
@@ -27,7 +27,7 @@ export class MovieRepositoryImpl implements MovieRepository {
      * @returns A promise that resolves to an array of movies.
      */
     async getNowPlayingMovies(page: number): Promise<PaginationType<Movie>> {
-        const res: { data: MovieListResponseDto } = await this.instance.get(
+        const res: { data: MovieListResponse } = await this.instance.get(
             `${EndpointConfig.NowPlayingMoviesEndpoint}?page=${page}`,
         );
         const movies: Movie[] = res.data.results.map((tmdbMovie) => ({
@@ -68,6 +68,15 @@ export class MovieRepositoryImpl implements MovieRepository {
      * @returns A promise that resolves to the movie details.
      */
     async getMovieDetails(movieId: number): Promise<Movie> {
-        throw new Error('Method not implemented.');
+        const res: { data: MovieDetailsResponse } = await this.instance.get(
+            `${EndpointConfig.MovieDetailsEndpoint.replace('{movie_id}', movieId.toString())}`,
+        );
+        return {
+            id: res.data.id,
+            title: res.data.title,
+            posterPath: res.data.poster_path,
+            overview: res.data.overview,
+            releaseDate: res.data.release_date,
+        };
     }
 }

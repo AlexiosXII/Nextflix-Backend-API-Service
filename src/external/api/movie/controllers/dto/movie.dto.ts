@@ -82,3 +82,11 @@ export class MovieSuccessResponseDto extends SuccessResponseDto {
     })
     data: MoviePaginationDataDto;
 }
+
+export class MovieDetailSuccessResponseDto extends SuccessResponseDto {
+    @ApiProperty({
+        description: 'Movie details',
+        type: MovieDto,
+    })
+    data: MovieDto;
+}
