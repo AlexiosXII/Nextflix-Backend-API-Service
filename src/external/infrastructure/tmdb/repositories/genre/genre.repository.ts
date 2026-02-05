@@ -6,6 +6,7 @@ import { TmdbService } from '../../tmdb.service';
 import { AxiosInstance } from 'node_modules/axios/index.cjs';
 import { TmdbGenre } from '../../type/genre';
 import { EndpointConfig } from '../../tmdb.config';
+import { MethodCache } from 'src/common/decorators/method-tracer/method-cache.decorator';
 
 @MethodTracer()
 @Injectable()
@@ -22,6 +23,7 @@ export class GenreRepositoryImpl implements GenreRepository {
      * @param genre - The genre of the movies.
      * @returns A promise that resolves to an array of genres.
      */
+    @MethodCache()
     async getGenres(): Promise<Genre[]> {
         const res: { data: { genres: TmdbGenre[] } } = await this.instance.get(EndpointConfig.GenresEndpoint);
         return res.data.genres.map((genre) => ({

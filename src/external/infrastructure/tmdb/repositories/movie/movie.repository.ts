@@ -7,6 +7,7 @@ import { TmdbService } from '../../tmdb.service';
 import { EndpointConfig } from '../../tmdb.config';
 import { MovieDetailsResponse, MovieListResponse } from '../../type/movie';
 import { PaginationType } from 'src/common/type/pagination.type';
+import { MethodCache } from 'src/common/decorators/method-tracer/method-cache.decorator';
 
 export const providerName = 'MovieRepositoryInterface';
 
@@ -26,6 +27,7 @@ export class MovieRepositoryImpl implements MovieRepository {
      * Retrieves now playing movies.
      * @returns A promise that resolves to an array of movies.
      */
+    @MethodCache()
     async getNowPlayingMovies(page: number): Promise<PaginationType<Movie>> {
         const res: { data: MovieListResponse } = await this.instance.get(
             `${EndpointConfig.NowPlayingMoviesEndpoint}?page=${page}`,
@@ -50,6 +52,7 @@ export class MovieRepositoryImpl implements MovieRepository {
      * Retrieves trending movies.
      * @returns A promise that resolves to an array of movies.
      */
+    @MethodCache()
     async getTrendingMovies(timeWindow: string): Promise<Movie[]> {
         const res: { data: MovieListResponse } = await this.instance.get(
             `${EndpointConfig.TrendingMoviesEndpoint.replace('{time_window}', timeWindow)}`,
@@ -95,6 +98,7 @@ export class MovieRepositoryImpl implements MovieRepository {
      * @param movieId - The ID of the movie.
      * @returns A promise that resolves to the movie details.
      */
+    @MethodCache()
     async getMovieDetails(movieId: number): Promise<Movie> {
         const res: { data: MovieDetailsResponse } = await this.instance.get(
             `${EndpointConfig.MovieDetailsEndpoint.replace('{movie_id}', movieId.toString())}`,

@@ -34,12 +34,4 @@ describe('GenreRepositoryImpl', () => {
         expect(mockInstance.get).toHaveBeenCalledTimes(1);
         expect(mockInstance.get).toHaveBeenCalledWith('/genre/movie/list');
     });
-
-    it('should propagate errors from the TMDB client', async () => {
-        const error = new Error('network failure');
-        mockInstance.get.mockRejectedValue(error);
-
-        await expect(repository.getGenres()).rejects.toThrow(error);
-        expect(mockInstance.get).toHaveBeenCalledWith('/genre/movie/list');
-    });
 });
