@@ -14,11 +14,11 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository designed in [Onion Architecture](<(https://medium.com/expedia-group-tech/onion-architecture-deed8a554423)>).
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository designed in Clean Architecture pattern.
 
 ## Project Structure
 
-This project follows the Onion Architecture pattern, organizing code into distinct layers with clear separation of concerns:
+This project follows the Clean Architecture pattern, organizing code into distinct layers with clear separation of concerns:
 
 ```
 src/
@@ -30,15 +30,24 @@ src/
 │   ├── context/
 │   │   └── app-request-context.ts
 │   ├── decorators/
+│   │   ├── method-cache/
 │   │   └── method-tracer/
 │   │       ├── method-tracer.decorator.ts
 │   │       └── method-tracer.decorator.spec.ts
 │   ├── dto/
-│   │   └── error-response.dto.ts
+│   │   ├── error-response.dto.ts
+│   │   ├── pagination.dto.ts
+│   │   └── success-response.dto.ts
 │   ├── errors/
-│   │   └── application.error.ts
+│   │   ├── application.error.ts
+│   │   ├── unauthorized.error.ts
+│   │   └── list/
 │   ├── filter/
-│   │   └── application-error.filter.ts
+│   │   ├── application-error.filter.ts
+│   │   └── unauthorized-error.filter.ts
+│   ├── guard/
+│   │   ├── auth.guard.ts
+│   │   └── auth.guard.spec.ts
 │   ├── interceptors/
 │   │   ├── context.interceptor.ts
 │   │   ├── success-response.interceptor.ts
@@ -46,59 +55,115 @@ src/
 │   ├── logger/
 │   │   ├── logger.module.ts
 │   │   └── winston.module.ts
+│   ├── type/
+│   │   └── pagination.type.ts
 │   └── utils/
 │       └── sensitive-data/
 │           ├── sensitive-data.helper.ts
 │           └── sensitive-data.helper.spec.ts
 ├── core/                            # Business logic layer
-│   ├── application/                 # Application services (Use cases)
+│   ├── domain/                      # Domain layer (Entities, Repository Interfaces, Domain Errors)
 │   │   ├── auth/
-│   │   │   ├── dto/
-│   │   │   │   ├── login-response.dto.ts
-│   │   │   │   └── login-username.dto.ts
-│   │   │   └── service/
-│   │   │       ├── auth.service.ts
-│   │   │       └── __test__/
-│   │   │           └── auth.service.spec.ts
+│   │   │   └── auth.error.ts
+│   │   ├── favorite/
+│   │   │   ├── entities/
+│   │   │   │   └── favorite.entity.ts
+│   │   │   ├── error/
+│   │   │   │   └── favorite.error.ts
+│   │   │   └── repository/
+│   │   │       └── favorite.repository.interface.ts
+│   │   ├── movie/
+│   │   │   ├── entities/
+│   │   │   │   ├── genre.entity.ts
+│   │   │   │   └── movie.entity.ts
+│   │   │   ├── error/
+│   │   │   │   └── movie.error.ts
+│   │   │   └── repository/
+│   │   │       ├── genre.repository.interface.ts
+│   │   │       └── movie.repository.interface.ts
 │   │   └── user/
-│   │       ├── dto/
-│   │       │   └── create-user.dto.ts
-│   │       └── service/
-│   │           ├── user.service.ts
-│   │           └── user.service.spec.ts
-│   └── domain/                      # Domain layer (Entities, Value Objects, Domain Services)
+│   │       ├── entities/
+│   │       │   └── user.entity.ts
+│   │       ├── error/
+│   │       │   └── user.error.ts
+│   │       └── repository/
+│   │           └── user.repository.interface.ts
+│   └── usecase/                     # Use cases (Application business rules)
 │       ├── auth/
-│       │   ├── entities/
-│       │   │   └── auth.entity.ts
-│       │   ├── errors/
-│       │   │   └── auth.error.ts
-│       │   └── repositories/
-│       │       └── auth.repository.interface.ts
+│       │   ├── login.usecase.ts
+│       │   └── login.usecase.spec.ts
+│       ├── favorite/
+│       │   ├── add-favorite.usecase.ts
+│       │   ├── add-favorite.usecase.spec.ts
+│       │   ├── get-favorites.usecase.ts
+│       │   ├── get-favorites.usecase.spec.ts
+│       │   ├── remove-favorite.usecase.ts
+│       │   └── remove-favorite.usecase.spec.ts
+│       ├── movie/
+│       │   ├── get-genres.usecase.ts
+│       │   ├── get-genres.usecase.spec.ts
+│       │   ├── get-movie.usecase.ts
+│       │   ├── get-movie.usecase.spec.ts
+│       │   ├── get-movies.usecase.ts
+│       │   ├── get-movies.usecase.spec.ts
+│       │   ├── get-trending-movies.usecase.ts
+│       │   ├── get-trending-movies.usecase.spec.ts
+│       │   ├── search-movies.usecase.ts
+│       │   └── search-movies.usecase.spec.ts
 │       └── user/
-│           ├── entities/
-│           │   └── user.entity.ts
-│           └── repositories/
-│               └── user.repository.interface.ts
-├── external/                        # External layer (Controllers, Infrastructure)
-│   ├── api/                         # API controllers and modules
+│           ├── create-user.usecase.ts
+│           ├── create-user.usecase.spec.ts
+│           ├── get-user.usecase.ts
+│           └── get-user.usecase.spec.ts
+├── external/                        # External layer (Adapters & Infrastructure)
+│   ├── api/                         # API adapters (Controllers & Modules)
 │   │   ├── auth/
 │   │   │   ├── auth.module.ts
 │   │   │   └── controllers/
 │   │   │       ├── auth.controller.ts
 │   │   │       └── auth.controller.spec.ts
+│   │   ├── favorite/
+│   │   │   ├── favorite.module.ts
+│   │   │   └── controllers/
+│   │   │       ├── favorite.controller.ts
+│   │   │       └── favorite.controller.spec.ts
+│   │   ├── health/
+│   │   │   ├── health.module.ts
+│   │   │   └── controllers/
+│   │   │       └── health.controller.ts
+│   │   ├── movie/
+│   │   │   ├── controllers/
+│   │   │   │   ├── movie.controller.ts
+│   │   │   │   └── movie.controller.spec.ts
+│   │   │   └── movie.module.ts
 │   │   └── user/
-│   │       ├── user.module.ts
-│   │       └── controllers/
-│   │           ├── user.controller.ts
-│   │           └── user.controller.spec.ts
+│   │       ├── controllers/
+│   │       │   ├── user.controller.ts
+│   │       │   └── user.controller.spec.ts
+│   │       └── user.module.ts
 │   └── infrastructure/              # Infrastructure implementations
-│       └── database/
-│           └── repositories/
-│               ├── auth/
-│               │   └── auth.repository.ts
-│               └── user/
-│                   ├── user.repository.ts
-│                   └── user.repository.spec.ts
+│       ├── database/
+│       │   ├── prisma.service.ts
+│       │   └── repositories/
+│       │       ├── favorite/
+│       │       │   ├── favorite.repository.ts
+│       │       │   └── favorite.repository.spec.ts
+│       │       └── user/
+│       │           ├── user.repository.ts
+│       │           └── user.repository.spec.ts
+│       └── tmdb/                   # TMDB API integration
+│           ├── repositories/
+│           │   ├── genre/
+│           │   │   ├── genre.repository.ts
+│           │   │   └── genre.repository.spec.ts
+│           │   └── movie/
+│           │       ├── movie.repository.ts
+│           │       └── movie.repository.spec.ts
+│           ├── tmdb.config.ts
+│           ├── tmdb.service.ts
+│           └── type/
+├── generated/                       # Auto-generated Prisma Client
+│   └── prisma/
 └── i18n/                           # Internationalization files
     ├── en/
     │   └── error.json
@@ -108,13 +173,15 @@ src/
 
 ### Architecture Layers
 
-- **Domain Layer** (`src/core/domain/`): Contains business entities, value objects, and domain services. This is the innermost layer with no dependencies on external layers.
+- **Domain Layer** (`src/core/domain/`): Contains business entities, repository interfaces, and domain errors. This is the innermost layer with no dependencies on external layers. It defines the core business models and contracts.
 
-- **Application Layer** (`src/core/application/`): Contains application services (use cases) that orchestrate domain objects and implement business workflows.
+- **Use Case Layer** (`src/core/usecase/`): Contains application business rules that orchestrate the flow of data to and from entities. Use cases implement specific business operations and coordinate domain objects.
 
-- **External Layer** (`src/external/`): Contains controllers, infrastructure implementations, and external service integrations.
+- **External Layer** (`src/external/`): Contains adapters and infrastructure implementations:
+    - **API** (`src/external/api/`): Controllers and modules that handle HTTP requests and responses
+    - **Infrastructure** (`src/external/infrastructure/`): Concrete implementations of repository interfaces (database with Prisma, TMDB API integration)
 
-- **Common Layer** (`src/common/`): Contains shared utilities, configurations, and cross-cutting concerns used across all layers.
+- **Common Layer** (`src/common/`): Contains shared utilities, configurations, DTOs, guards, filters, interceptors, and cross-cutting concerns used across all layers.
 
 ## Installation
 
