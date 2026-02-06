@@ -10,8 +10,8 @@ async function bootstrap() {
     if (process.env.NODE_ENV !== 'local') {
         app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
     }
-    app.use(helmet());
-    app.enableCors();
+    // app.use(helmet());
+    // app.enableCors();
     app.enableShutdownHooks();
 
     const config = new DocumentBuilder()
