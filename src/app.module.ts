@@ -19,6 +19,7 @@ import { HealthModule } from './external/api/health/health.module';
 import { UserModule } from './external/api/user/user.module';
 import { AuthModule } from './external/api/auth/auth.module';
 import { MovieModule } from './external/api/movie/movie.module';
+import { FavoriteModule } from './external/api/favorite/favorite.module';
 
 @Module({
     imports: [
@@ -51,6 +52,7 @@ import { MovieModule } from './external/api/movie/movie.module';
         UserModule,
         AuthModule,
         MovieModule,
+        FavoriteModule,
     ],
     providers: [
         {

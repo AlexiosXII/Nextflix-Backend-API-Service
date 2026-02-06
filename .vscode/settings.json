@@ -17,5 +17,5 @@
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
-    "cSpell.words": ["nestjs", "requestid", "Tmdb", "usecase", "uuidv"]
+    "cSpell.words": ["healthcheck", "nestjs", "requestid", "Tmdb", "unfavorited", "usecase", "uuidv"]
 }

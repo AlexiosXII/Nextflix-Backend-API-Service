@@ -15,6 +15,10 @@
             "E0001": "Invalid credentials provided",
             "E0002": "Unauthorized access",
             "E0003": "Authentication token has expired"
+        },
+        "favorite": {
+            "E0001": "Favorite item not found",
+            "E0002": "Favorite item already exists"
         }
     }
 }

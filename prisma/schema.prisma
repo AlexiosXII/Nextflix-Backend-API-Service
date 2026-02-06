@@ -14,4 +14,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime
   name      String
+
+  favorites Favorite[]
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  itemId    Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, itemId])
 }
